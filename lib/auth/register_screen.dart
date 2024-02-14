@@ -43,7 +43,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
   }
+  showAlart(){
+   return showDialog(context: context, builder: (context) {
+     return  AlertDialog(title: Text("Pick image from"),
+       content: Column(
+         mainAxisSize: MainAxisSize.min,
+         children: [
+           ListTile(
+             leading: Icon(Icons.camera_alt_outlined),
+             title: Text("Camara"),
+           ),
+           ListTile(
+             leading: Icon(Icons.image_outlined),
+             title: Text("Gallery"),
+           ),
 
+         ],
+       ),
+     );
+   },);
+     
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,12 +102,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 margin: EdgeInsets.only(top: 60.0, left: 20.0, right: 20.0),
                 child: Column(
                   children: [
-                    // Center(
-                    //     child: Image.asset(
-                    //       "images/logo.png",
-                    //       width: MediaQuery.of(context).size.width / 1.5,
-                    //       fit: BoxFit.cover,
-                    //     )),
                     SizedBox(
                       height: 50.0,
                     ),
@@ -96,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Container(
                         padding: EdgeInsets.only(left: 20.0, right: 20.0),
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 2,
+                        height: MediaQuery.of(context).size.height /1.5,
                         decoration: BoxDecoration(
                             color: Colors.white, borderRadius: BorderRadius.circular(20)),
                         child: Form(
@@ -104,13 +119,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Column(
                             children: [
                               SizedBox(
-                                height: 30.0,
+                                height: 10.0,
                               ),
                               Text(
-                                "Sign up",
+                                "Sign up",style:TextStyle(fontSize: 25) ,
                               ),
                               SizedBox(
-                                height: 30.0,
+                                height: 10.0,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  print("object");
+                                  showAlart();
+                                },
+                                child: CircleAvatar(
+                                  radius: 80,
+                                  child: Icon(Icons.person,size: 80,),
+
+                                ),
+                              ),
+
+                              SizedBox(
+                                height: 10.0,
                               ),
                               TextFormField(
                                 controller: namecontroller,
@@ -191,7 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 70.0,
+                      height: 50.0,
                     ),
                     GestureDetector(
                         onTap: () {
@@ -202,7 +232,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ))
                   ],
                 ),
-              )
+              ),
+
             ],
           ),
         ),
