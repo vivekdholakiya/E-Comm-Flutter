@@ -16,9 +16,12 @@ class _ChackUSerState extends State<ChackUser> {
   chackUserFun() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      Get.to(HomepageScreen());
-    } else {
-      Get.to(LoginScreen());
+      Future.delayed(Duration.zero, () {
+        Get.offAll(HomepageScreen());
+      });    } else {
+      Future.delayed(Duration.zero, () {
+        Get.offAll(LoginScreen());
+      });
     }
   }
 

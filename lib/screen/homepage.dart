@@ -18,7 +18,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
         centerTitle: true,
       ),
       backgroundColor: Color.fromRGBO(246, 237, 195, 1.00),
-      body: StreamBuilder(
+      body:
+      StreamBuilder(
           stream: FirebaseFirestore.instance.collection("Users").snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {

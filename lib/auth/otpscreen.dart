@@ -71,7 +71,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   try {
                     PhoneAuthCredential credential = await PhoneAuthProvider.credential(
                         verificationId: widget.varificationid,
-                        smsCode: userotpcontroller.text.toString());
+                        smsCode:userotpcontroller.text.toString());
                     FirebaseAuth.instance.signInWithCredential(credential).then((value) => Get.offAll(HomepageScreen()));
                   } catch (ex) {
                     log(ex.toString());

@@ -1,9 +1,13 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:ECommerce/screen/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:image_picker/image_picker.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -19,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController namecontroller = new TextEditingController();
   TextEditingController passwordcontroller = new TextEditingController();
   TextEditingController mailcontroller = new TextEditingController();
-
+  XFile? pickedImage;
   final _formkey = GlobalKey<FormState>();
 
   sighUp(String email, String password) async {
@@ -43,28 +47,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
   }
-  showAlart(){
-   return showDialog(context: context, builder: (context) {
-     return  AlertDialog(title: Text("Pick image from"),
-       content: Column(
-         mainAxisSize: MainAxisSize.min,
-         children: [
-           ListTile(
-             leading: Icon(Icons.camera_alt_outlined),
-             title: Text("Camara"),
-           ),
-           ListTile(
-             leading: Icon(Icons.image_outlined),
-             title: Text("Gallery"),
-           ),
 
-         ],
-       ),
-     );
-   },);
-     
+  showAlart() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Pick image from"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                onTap: () async {
+                  await pickImg(ImageSource.camera);
+                  Get.back();
+                  setState(() {
 
+                  });
+                },
+                leading: Icon(Icons.camera_alt_outlined),
+                title: Text("Camara"),
+              ),
+              ListTile(
+                onTap: () async {
+                  await pickImg(ImageSource.gallery);
+                  Get.back();
+                  setState(() {
+
+                  });
+                },
+                leading: Icon(Icons.image_outlined),
+                title: Text("Gallery"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
+
+  pickImg(ImageSource imageSource) async {
+    try {
+      final photo = await ImagePicker().pickImage(source: imageSource);
+      if (photo == null) {
+        final tampImage = XFile(photo!.path);
+        setState(() {
+          pickedImage = tampImage;
+        });
+      }
+    } catch (ex) {
+      log(ex.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Container(
                         padding: EdgeInsets.only(left: 20.0, right: 20.0),
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height /1.5,
+                        height: MediaQuery.of(context).size.height / 1.5,
                         decoration: BoxDecoration(
                             color: Colors.white, borderRadius: BorderRadius.circular(20)),
                         child: Form(
@@ -122,7 +157,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 10.0,
                               ),
                               Text(
-                                "Sign up",style:TextStyle(fontSize: 25) ,
+                                "Sign up",
+                                style: TextStyle(fontSize: 25),
                               ),
                               SizedBox(
                                 height: 10.0,
@@ -131,14 +167,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onTap: () {
                                   print("object");
                                   showAlart();
+                                  // setState(() {
+                                  //   print("pickimg ${pickedImage!.path}");
+                                  // });
                                 },
-                                child: CircleAvatar(
-                                  radius: 80,
-                                  child: Icon(Icons.person,size: 80,),
-
-                                ),
+                                child: pickedImage != null
+                                    ? CircleAvatar(
+                                        radius: 80,
+                                        // backgroundImage: FileImage(pickedImage!.),
+                                        backgroundImage: FileImage(File(pickedImage!.path)),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 80,
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 80,
+                                        ),
+                                      ),
                               ),
-
                               SizedBox(
                                 height: 10.0,
                               ),
@@ -233,7 +279,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
               ),
-
             ],
           ),
         ),

@@ -183,7 +183,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                                   Get.to(OtpScreen(varificationid: varificationid,));
                                 },
                                 codeAutoRetrievalTimeout: (verificationId) {},
-                                phoneNumber: usernumbercontroller.text.toString(),
+                                phoneNumber:'+91'+usernumbercontroller.text.toString(),
                               );
 
                             },
